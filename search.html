@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <title>Movies-Wiki</title>
+
+
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+
+    <!--/Style-CSS -->
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
+    <!--//Style-CSS -->
+    <!-- font-awesome-icons -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <!-- //font-awesome-icons -->
+</head>
+
+<body onload="mainfun()">
+    <section class="section">
+
+        <div id="main" class="main">
+            <div class="wrapper">
+                <div class="top">
+                    <div class="form">
+                        <a href="index.html">
+                            <h1>MoviesWiki</h1>
+                        </a>
+
+
+
+                        <form action="#" method="GET" onsubmit="mainfun()" class="d-flex coming-form">
+                            <input id="text" name="text" type="text" placeholder="Search for any movies, series etc.,">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+
+                    </div>
+
+
+                </div>
+                <center style="padding-top: 50px;">
+                    <div id="results" class="row">
+
+                    </div>
+                </center>
+                <center style="padding-top: 4%;" id="show">
+
+                </center>
+
+
+            </div>
+        </div>
+
+
+
+    </section>
+
+
+</body>
+<script type="text/javascript">
+    var pagecount = 1;
+
+    //var results = document.getElementById("results");
+    var button = document.getElementById("show");
+    let searchParams = new URLSearchParams(window.location.search);
+    let text = searchParams.get('text');
+
+    function mainfun() {
+
+
+        //var text = document.getElementById("text").value;
+
+        getresults(pagecount, text);
+
+        button.innerHTML += '<button onclick="showmore()" type="submit">Show More</button>';
+        //console.log(myJson["Search"][0]);
+
+
+    }
+    function showmore() {
+        //var text = document.getElementById("text").value;
+        pagecount++;
+        getresults(pagecount, text);
+
+
+    }
+    async function getresults(pagecount, text) {
+        const response = await fetch('http://www.omdbapi.com/?s=' + text + '&page=' + pagecount + '&apikey=7b47238d');
+        const myJson = await response.json();
+        console.log(myJson);
+
+        if (myJson["Response"] != "False") {
+            for (var i = 0; i < myJson["Search"].length; i++) {
+                var movie = myJson["Search"][i];
+
+                if (movie["Poster"] != "N/A") {
+                    var title = movie["Title"];
+
+                    if (title.length > 15) {
+                        title = title.substring(0, 15);
+                    }
+                    results.innerHTML += "<div class='col-3 card'><a href='movie.html?id=" + movie['imdbID'] + "&text=" + text + "'><img style='width:150px; height:222px;' src='" + movie['Poster'] + "'></a><div class='container'><p style='color:white;'>" + title + "</p></div></div>";
+
+                }
+            }
+        } else {
+            if (pagecount == 1) {
+                document.getElementById("main").style.height = "100vh";
+
+            }
+            button.innerHTML = "<br><h4 style='color:white;'>No more Results Found</h4>";
+        }
+
+    }
+</script>
+
+</html>
