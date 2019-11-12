@@ -1,6 +1,8 @@
 # moviewiki
 A web application to search for any movie and view details about it. (HTML, CSS, JS only).
 
+## Link: https://naresh3599.github.io/moviewiki/
+
 ## Search for Movies & Series
 
 ![alt Search for Image](https://i.ibb.co/gFsGdnT/ss1.png)
